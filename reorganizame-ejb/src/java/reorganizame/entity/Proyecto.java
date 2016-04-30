@@ -68,6 +68,8 @@ public class Proyecto implements Serializable {
     @ManyToOne(optional = false)
     private Usuario lider;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProyecto")
+    private Collection<Invitacion> invitacionCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProyecto")
     private Collection<Miembro> miembroCollection;
 
     public Proyecto() {
@@ -138,6 +140,15 @@ public class Proyecto implements Serializable {
 
     public void setLider(Usuario lider) {
         this.lider = lider;
+    }
+
+    @XmlTransient
+    public Collection<Invitacion> getInvitacionCollection() {
+        return invitacionCollection;
+    }
+
+    public void setInvitacionCollection(Collection<Invitacion> invitacionCollection) {
+        this.invitacionCollection = invitacionCollection;
     }
 
     @XmlTransient

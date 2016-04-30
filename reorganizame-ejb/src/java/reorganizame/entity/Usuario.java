@@ -37,8 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
     @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario"),
     @NamedQuery(name = "Usuario.findByNombre", query = "SELECT u FROM Usuario u WHERE u.nombre = :nombre"),
-    @NamedQuery(name = "Usuario.findByPrimerApellido", query = "SELECT u FROM Usuario u WHERE u.primerApellido = :primerApellido"),
-    @NamedQuery(name = "Usuario.findBySegundoApellido", query = "SELECT u FROM Usuario u WHERE u.segundoApellido = :segundoApellido"),
+    @NamedQuery(name = "Usuario.findByApellidos", query = "SELECT u FROM Usuario u WHERE u.apellidos = :apellidos"),
+    @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo"),
     @NamedQuery(name = "Usuario.findByFechaNacimiento", query = "SELECT u FROM Usuario u WHERE u.fechaNacimiento = :fechaNacimiento"),
     @NamedQuery(name = "Usuario.findByAlias", query = "SELECT u FROM Usuario u WHERE u.alias = :alias"),
     @NamedQuery(name = "Usuario.findByContrasena", query = "SELECT u FROM Usuario u WHERE u.contrasena = :contrasena")})
@@ -54,11 +54,13 @@ public class Usuario implements Serializable {
     @Column(name = "nombre")
     private String nombre;
     @Size(max = 45)
-    @Column(name = "primerApellido")
-    private String primerApellido;
-    @Size(max = 45)
-    @Column(name = "segundoApellido")
-    private String segundoApellido;
+    @Column(name = "apellidos")
+    private String apellidos;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
+    @Column(name = "correo")
+    private String correo;
     @Column(name = "fechaNacimiento")
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento;
@@ -67,7 +69,9 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "alias")
     private String alias;
-    @Size(max = 45)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "contrasena")
     private String contrasena;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "autor")
@@ -76,6 +80,8 @@ public class Usuario implements Serializable {
     private Collection<Entrada> entradaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "lider")
     private Collection<Proyecto> proyectoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
+    private Collection<Invitacion> invitacionCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario")
     private Collection<Miembro> miembroCollection;
 
@@ -86,9 +92,11 @@ public class Usuario implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public Usuario(Integer idUsuario, String alias) {
+    public Usuario(Integer idUsuario, String correo, String alias, String contrasena) {
         this.idUsuario = idUsuario;
+        this.correo = correo;
         this.alias = alias;
+        this.contrasena = contrasena;
     }
 
     public Integer getIdUsuario() {
@@ -107,20 +115,20 @@ public class Usuario implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getPrimerApellido() {
-        return primerApellido;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setPrimerApellido(String primerApellido) {
-        this.primerApellido = primerApellido;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
-    public String getSegundoApellido() {
-        return segundoApellido;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setSegundoApellido(String segundoApellido) {
-        this.segundoApellido = segundoApellido;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
     public Date getFechaNacimiento() {
@@ -172,6 +180,15 @@ public class Usuario implements Serializable {
 
     public void setProyectoCollection(Collection<Proyecto> proyectoCollection) {
         this.proyectoCollection = proyectoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Invitacion> getInvitacionCollection() {
+        return invitacionCollection;
+    }
+
+    public void setInvitacionCollection(Collection<Invitacion> invitacionCollection) {
+        this.invitacionCollection = invitacionCollection;
     }
 
     @XmlTransient
