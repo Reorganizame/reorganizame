@@ -5,9 +5,11 @@
  */
 package reorganizame.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import reorganizame.entity.Usuario;
 
 /**
@@ -27,6 +29,16 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     public UsuarioFacade() {
         super(Usuario.class);
+    }
+    
+    public Usuario findUserByEmail(String email){
+        Query q = em.createNamedQuery("Usuario.findByCorreo");
+        List<Usuario> listausuarios = q.getResultList();
+        Usuario resultado = null;
+        if(listausuarios.size()>0){
+            resultado = listausuarios.get(0);
+        }
+        return resultado;
     }
     
 }
