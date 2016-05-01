@@ -11,7 +11,7 @@ import reorganizame.entity.Miembro;
 import reorganizame.entity.Proyecto;
 import reorganizame.entity.Tarea;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-04-30T18:13:31")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-04-30T20:23:37")
 @StaticMetamodel(Usuario.class)
 public class Usuario_ { 
 
