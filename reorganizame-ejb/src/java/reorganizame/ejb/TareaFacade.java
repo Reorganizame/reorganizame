@@ -5,10 +5,13 @@
  */
 package reorganizame.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import reorganizame.entity.Tarea;
+import reorganizame.entity.Usuario;
 
 /**
  *
@@ -29,4 +32,11 @@ public class TareaFacade extends AbstractFacade<Tarea> {
         super(Tarea.class);
     }
     
+      public List<Tarea> tareasDeUnProyecto (int idProyecto){
+        Query consulta;
+        consulta = this.em.createQuery("SELECT t FROM Tarea t WHERE t.proyecto.idProyecto=:idProyecto");
+        consulta.setParameter("idProyecto", idProyecto);
+        return consulta.getResultList();
+        
+    }
 }

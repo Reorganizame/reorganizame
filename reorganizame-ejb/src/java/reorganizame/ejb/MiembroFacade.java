@@ -1,14 +1,17 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package reorganizame.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import reorganizame.entity.Miembro;
+import reorganizame.entity.Usuario;
 
 /**
  *
@@ -27,6 +30,13 @@ public class MiembroFacade extends AbstractFacade<Miembro> {
 
     public MiembroFacade() {
         super(Miembro.class);
+    }
+    
+    public List<Miembro> findMiembroByUsuario (Usuario usr) {
+        Query q; 
+        q = em.createQuery("SELECT m FROM Miembro m WHERE m.idUsuario = :Usuario AND m.rol NOT LIKE 'lider'");
+        q.setParameter("Usuario", usr);
+        return q.getResultList();
     }
     
 }
