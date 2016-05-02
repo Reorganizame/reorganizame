@@ -41,4 +41,14 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         return resultado;
     }
     
+    public Usuario findUsuarioByAlias(String alias) {
+        Query consulta = this.em.createNamedQuery("Usuario.findByAlias");
+        consulta.setParameter("alias", alias);
+        List<Usuario> resultadoConsulta = consulta.getResultList();
+        Usuario usuarioEncontrado = null;
+        if (!resultadoConsulta.isEmpty()) {
+            usuarioEncontrado = resultadoConsulta.get(0);
+        }
+        return usuarioEncontrado;
+    }
 }

@@ -119,7 +119,9 @@ public class ServletRecuperarPassword extends HttpServlet {
             Message msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress("reorganiza.me@outlook.com", "Reorganiza.me"));
             msg.addRecipient(Message.RecipientType.TO, new InternetAddress(usuario.getCorreo(), usuario.getNombre()));
-            msg.setSubject("Su contraseña ha sido reestablecida.\nLa nueva contraseña es: " + this.generarPasswordAleatorio(10));
+            String password = this.generarPasswordAleatorio(10);
+            usuario.setContrasena(password);
+            msg.setSubject("Su contraseña ha sido reestablecida.\nLa nueva contraseña es: " + password);
             Transport.send(msg);
         } catch (AddressException e) {
             // ...
