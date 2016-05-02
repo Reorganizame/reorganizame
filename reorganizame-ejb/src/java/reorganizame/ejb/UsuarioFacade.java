@@ -5,9 +5,11 @@
  */
 package reorganizame.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import reorganizame.entity.Usuario;
 
 /**
@@ -29,4 +31,25 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         super(Usuario.class);
     }
     
+    public Usuario findUserByEmail(String email){
+        Query q = em.createNamedQuery("Usuario.findByCorreo");
+        q.setParameter("correo", email);
+        List<Usuario> listausuarios = q.getResultList();
+        Usuario resultado = null;
+        if(!listausuarios.isEmpty()){
+            resultado = listausuarios.get(0);
+        }
+        return resultado;
+    }
+    
+    public Usuario findUsuarioByAlias(String alias) {
+        Query consulta = this.em.createNamedQuery("Usuario.findByAlias");
+        consulta.setParameter("alias", alias);
+        List<Usuario> resultadoConsulta = consulta.getResultList();
+        Usuario usuarioEncontrado = null;
+        if (!resultadoConsulta.isEmpty()) {
+            usuarioEncontrado = resultadoConsulta.get(0);
+        }
+        return usuarioEncontrado;
+    }
 }

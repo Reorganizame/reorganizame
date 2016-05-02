@@ -5,7 +5,8 @@
         <group>
             <file>file:/C:/Users/nacho/Documents/reorganizame/reorganizame-war/web/listaProyectos.jsp</file>
             <file>file:/C:/Users/nacho/Documents/reorganizame/reorganizame-war/web/crearNuevoProyecto.jsp</file>
-            <file>file:/C:/Users/nacho/Documents/reorganizame/reorganizame-war/Source%20Files/reorganizame/servlet/CrearProyectoServlet.java</file>
+            <file>file:/C:/Users/nacho/Documents/reorganizame/reorganizame-war/src/java/reorganizame/servlet/CrearProyectoServlet.java</file>
+            <file>file:/C:/Users/nacho/Documents/reorganizame/reorganizame-war/src/java/reorganizame/servlet/ListaProyectosServlet.java</file>
         </group>
     </open-files>
 </project-private>
