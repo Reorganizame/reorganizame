@@ -121,6 +121,7 @@ public class ServletRecuperarPassword extends HttpServlet {
             msg.addRecipient(Message.RecipientType.TO, new InternetAddress(usuario.getCorreo(), usuario.getNombre()));
             String password = this.generarPasswordAleatorio(10);
             usuario.setContrasena(password);
+            this.usuarioFacade.edit(usuario);
             msg.setSubject("Su contraseña ha sido reestablecida.\nLa nueva contraseña es: " + password);
             Transport.send(msg);
         } catch (AddressException e) {
