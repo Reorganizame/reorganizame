@@ -5,10 +5,13 @@
  */
 package reorganizame.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import reorganizame.entity.Miembro;
+import reorganizame.entity.Usuario;
 
 /**
  *
@@ -27,6 +30,13 @@ public class MiembroFacade extends AbstractFacade<Miembro> {
 
     public MiembroFacade() {
         super(Miembro.class);
+    }
+    
+    public List<Miembro> findMiembroByUsuario (Usuario usr) {
+        Query q; 
+        q = em.createNamedQuery("Miembro.findByUsuario");
+        q.setParameter("Usuario", usr);
+        return q.getResultList();
     }
     
 }

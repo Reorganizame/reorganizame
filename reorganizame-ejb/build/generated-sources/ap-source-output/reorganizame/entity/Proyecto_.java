@@ -11,18 +11,18 @@ import reorganizame.entity.Miembro;
 import reorganizame.entity.Tarea;
 import reorganizame.entity.Usuario;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-04-30T18:13:31")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2016-04-30T20:24:40")
 @StaticMetamodel(Proyecto.class)
 public class Proyecto_ { 
 
-    public static volatile SingularAttribute<Proyecto, String> descripcion;
-    public static volatile SingularAttribute<Proyecto, Integer> idProyecto;
-    public static volatile SingularAttribute<Proyecto, Date> fechaInicio;
-    public static volatile CollectionAttribute<Proyecto, Miembro> miembroCollection;
+    public static volatile SingularAttribute<Proyecto, String> nombre;
     public static volatile SingularAttribute<Proyecto, Usuario> lider;
+    public static volatile CollectionAttribute<Proyecto, Miembro> miembroCollection;
     public static volatile CollectionAttribute<Proyecto, Invitacion> invitacionCollection;
     public static volatile CollectionAttribute<Proyecto, Tarea> tareaCollection;
-    public static volatile SingularAttribute<Proyecto, String> nombre;
+    public static volatile SingularAttribute<Proyecto, Integer> idProyecto;
+    public static volatile SingularAttribute<Proyecto, String> descripcion;
     public static volatile CollectionAttribute<Proyecto, Entrada> entradaCollection;
+    public static volatile SingularAttribute<Proyecto, Date> fechaInicio;
 
 }
