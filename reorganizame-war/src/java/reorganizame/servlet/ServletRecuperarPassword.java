@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
@@ -50,7 +51,7 @@ public class ServletRecuperarPassword extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = (String) request.getAttribute("email");
+        String email = (String) request.getParameter("email");
         boolean error = false;
         Usuario usuario = null;
         if(email!=null){
@@ -113,16 +114,39 @@ public class ServletRecuperarPassword extends HttpServlet {
     }// </editor-fold>
 
     private void enviarMensaje(Usuario usuario) {
+        //Properties props = new Properties();
+        //props.put("mail.smtp.host", "usdc2spam2.slingmedia.com"); 
+        //props.put("mail.smtp.starttls.enable", "true");
+        //props.put("mail.smtp.auth", "true");
+        //props.put("mail.smtp.port", "9000");
+        //Session session = Session.getDefaultInstance(props, null);
+        
+        final String username = "reorganizame.app@gmail.com";
+        final String pass = "maqkmsvbwttgxtfb";
+
         Properties props = new Properties();
-        Session session = Session.getDefaultInstance(props, null);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+          new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, pass);
+                }
+          });
+        
         try{
             Message msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress("reorganiza.me@outlook.com", "Reorganiza.me"));
-            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(usuario.getCorreo(), usuario.getNombre()));
+            msg.setRecipient(Message.RecipientType.TO, new InternetAddress(usuario.getCorreo(), usuario.getNombre()));
+            msg.setSubject("Ha recuperado su contraseña");
             String password = this.generarPasswordAleatorio(10);
-            usuario.setContrasena(password);
+            usuario.setContrasena(Util.hash(password));
             this.usuarioFacade.edit(usuario);
-            msg.setSubject("Su contraseña ha sido reestablecida.\nLa nueva contraseña es: " + password);
+            msg.setText("Su contraseña ha sido reestablecida.\nLa nueva contraseña es: " + password);
             Transport.send(msg);
         } catch (AddressException e) {
             // ...

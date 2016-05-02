@@ -33,9 +33,10 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     
     public Usuario findUserByEmail(String email){
         Query q = em.createNamedQuery("Usuario.findByCorreo");
+        q.setParameter("correo", email);
         List<Usuario> listausuarios = q.getResultList();
         Usuario resultado = null;
-        if(listausuarios.size()>0){
+        if(!listausuarios.isEmpty()){
             resultado = listausuarios.get(0);
         }
         return resultado;
