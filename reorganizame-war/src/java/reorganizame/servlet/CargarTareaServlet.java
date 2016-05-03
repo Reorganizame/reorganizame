@@ -6,12 +6,18 @@
 package reorganizame.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
+import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import reorganizame.ejb.CategoriaFacade;
+import reorganizame.ejb.TareaFacade;
+import reorganizame.entity.Categoria;
+import reorganizame.entity.Tarea;
 
 /**
  *
@@ -19,6 +25,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "CargarTareaServlet", urlPatterns = {"/CargarTareaServlet"})
 public class CargarTareaServlet extends HttpServlet {
+
+    @EJB
+    private TareaFacade tareaFacade;
+
+    @EJB
+    private CategoriaFacade categoriaFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,7 +44,15 @@ public class CargarTareaServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        //to do
+        int idTarea = Integer.valueOf(request.getParameter("id"));
+        Tarea tarea = (Tarea) tareaFacade.find(idTarea);
+        List<Categoria> listaCategoria = categoriaFacade.findAll();
+        request.setAttribute("tarea", tarea);
+        request.setAttribute("listaCategoria", listaCategoria);
+
+        RequestDispatcher rd;
+        rd = this.getServletContext().getRequestDispatcher("/modificacionTarea.jsp");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

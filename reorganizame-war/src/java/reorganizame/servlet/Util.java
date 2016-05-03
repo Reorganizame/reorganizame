@@ -57,4 +57,11 @@ public class Util {
         return fechaResultado;
     }
 
+    public static String stringDesdeFecha(Date fecha) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String stringDeFecha;
+        stringDeFecha = simpleDateFormat.format(fecha);
+        return stringDeFecha;
+    }
+
 }

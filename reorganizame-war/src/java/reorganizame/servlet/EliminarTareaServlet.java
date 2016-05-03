@@ -6,12 +6,15 @@
 package reorganizame.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import reorganizame.ejb.TareaFacade;
+import reorganizame.entity.Tarea;
 
 /**
  *
@@ -19,6 +22,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "EliminarTareaServlet", urlPatterns = {"/EliminarTareaServlet"})
 public class EliminarTareaServlet extends HttpServlet {
+
+    @EJB
+    private TareaFacade tareaFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,7 +38,18 @@ public class EliminarTareaServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       // to do
+
+        String str;
+        str = request.getParameter("id");
+
+        if (str != null) {
+            int id = Integer.parseInt(str);
+            Tarea tarea = this.tareaFacade.find(id);
+            this.tareaFacade.remove(tarea);
+        }
+        RequestDispatcher rd;
+        rd = this.getServletContext().getRequestDispatcher("/MostrarProyectoServlet");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

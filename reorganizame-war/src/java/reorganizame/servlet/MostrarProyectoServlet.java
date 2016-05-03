@@ -45,9 +45,6 @@ public class MostrarProyectoServlet extends HttpServlet {
 
     @EJB
     private ProyectoFacade proyectoFacade;
-    
-    
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -61,25 +58,26 @@ public class MostrarProyectoServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         int idProyecto = Integer.valueOf(request.getParameter("idProyecto"));
-        String nombreProyecto = (String) proyectoFacade.findProyectoById(idProyecto).getNombre();
+        String nombreProyecto = proyectoFacade.findProyectoById(idProyecto).getNombre();
+        Usuario liderProyecto = proyectoFacade.findProyectoById(idProyecto).getLider();
         //String descripcionProyecto = (String) proyectoFacade.find(request.getAttribute("idProyecto")).getDescripcion();
-        
+
         List<Tarea> listaTareas = tareaFacade.tareasDeUnProyecto(idProyecto);
         List<Entrada> listaEntradas = entradaFacade.entradasDeUnProyecto(idProyecto);
         List<Usuario> listaUsuariosParaInvitar = usuarioFacade.usuariosNoMiembrosDeUnProyecto(idProyecto);
         request.setAttribute("nombreProyecto", nombreProyecto);
+        request.setAttribute("liderProyecto", liderProyecto);
+        request.setAttribute("idProyecto", idProyecto);
         request.setAttribute("listaTareas", listaTareas);
         request.setAttribute("listaEntradas", listaEntradas);
         request.setAttribute("listaUsuariosParaInvitar", listaUsuariosParaInvitar);
-        
+
         RequestDispatcher rd;
         rd = this.getServletContext().getRequestDispatcher("/proyecto.jsp");
         rd.forward(request, response);
-        
-        
-       
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

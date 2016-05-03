@@ -6,12 +6,17 @@
 package reorganizame.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import reorganizame.ejb.InvitacionFacade;
+import reorganizame.ejb.ProyectoFacade;
+import reorganizame.ejb.UsuarioFacade;
+import reorganizame.entity.Invitacion;
 
 /**
  *
@@ -19,6 +24,15 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "NuevaInvitacionServlet", urlPatterns = {"/NuevaInvitacionServlet"})
 public class NuevaInvitacionServlet extends HttpServlet {
+
+    @EJB
+    private InvitacionFacade invitacionFacade;
+
+    @EJB
+    private UsuarioFacade usuarioFacade;
+
+    @EJB
+    private ProyectoFacade proyectoFacade;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,8 +46,21 @@ public class NuevaInvitacionServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        //To do
-        
+
+        int idUsuario = Integer.valueOf(request.getParameter("invitar"));
+        int idProyecto = Integer.valueOf(request.getParameter("idProyecto"));
+        Invitacion invitacion = new Invitacion(0);
+        invitacion.setIdUsuario(usuarioFacade.find(idUsuario));
+        invitacion.setIdProyecto(proyectoFacade.find(idProyecto));
+        request.setAttribute("invitacionRealizada", "¡Invitaci&oacute;n realizada con &eacute;xito!");
+        try {
+            invitacionFacade.create(invitacion);
+        } catch (Exception e) {
+            request.setAttribute("invitacionRealizada", "El usuario ya ha sido invitado con anterioridad");
+        }
+
+        RequestDispatcher rd = this.getServletContext().getRequestDispatcher("/MostrarProyectoServlet");
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

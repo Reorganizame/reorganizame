@@ -30,12 +30,12 @@ public class EntradaFacade extends AbstractFacade<Entrada> {
     public EntradaFacade() {
         super(Entrada.class);
     }
-    
-      public List<Entrada> entradasDeUnProyecto (int idProyecto){
+
+    public List<Entrada> entradasDeUnProyecto(int idProyecto) {
         Query consulta;
         consulta = this.em.createQuery("Select e FROM Entrada e WHERE e.proyecto.idProyecto=:idProyecto");
         consulta.setParameter("idProyecto", idProyecto);
         return consulta.getResultList();
     }
-    
+
 }

@@ -28,9 +28,6 @@ import reorganizame.entity.Usuario;
  */
 @WebServlet(name = "ListaProyectosServlet", urlPatterns = {"/ListaProyectosServlet"})
 public class ListaProyectosServlet extends HttpServlet {
-    
-    
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,37 +38,33 @@ public class ListaProyectosServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     @EJB
     private ProyectoFacade facade;
     @EJB
     private MiembroFacade mfacade;
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
+
         HttpSession session = request.getSession();
         Usuario usr = (Usuario) session.getAttribute("usuario");
-        
+
         List<Proyecto> misProyectos = facade.findProyectoByLider(usr);
-        
+
         List<Miembro> membresia = mfacade.findMiembroByUsuario(usr);
         List<Proyecto> proyectos = new ArrayList<Proyecto>();
-        
+
         for (Miembro m : membresia) {
             proyectos.add(m.getIdProyecto());
         }
-        
+
         request.setAttribute("listaMisProyectos", misProyectos);
         request.setAttribute("listaProyectos", proyectos);
-        
+
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/listaProyectos.jsp");
         dispatcher.forward(request, response);
-            
-        
-        }
-    
+
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

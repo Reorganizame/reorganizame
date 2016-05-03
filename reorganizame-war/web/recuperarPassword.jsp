@@ -13,9 +13,9 @@
     </head>
     <body>
         <%
-            String str = (String)request.getAttribute("error");
+            String str = (String) request.getAttribute("error");
             String mensaje = "Introduzca su correo electrónico para enviarle sus datos sobre el inicio de sesión.";
-            if(str!= null && str.equals("error")){
+            if (str != null && str.equals("error")) {
                 mensaje = "Dirección de correo errónea, introduzca su correo de nuevo.";
             }
         %>

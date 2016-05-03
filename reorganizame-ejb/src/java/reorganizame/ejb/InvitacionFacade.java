@@ -5,10 +5,13 @@
  */
 package reorganizame.ejb;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import reorganizame.entity.Invitacion;
+import reorganizame.entity.Usuario;
 
 /**
  *
@@ -28,5 +31,11 @@ public class InvitacionFacade extends AbstractFacade<Invitacion> {
     public InvitacionFacade() {
         super(Invitacion.class);
     }
-    
+
+    public List<Invitacion> findByUsuario(Usuario usuario) {
+        Query consulta = this.em.createQuery("SELECT i FROM Invitacion i WHERE i.idUsuario = :usuario");
+        consulta.setParameter("usuario", usuario);
+        return consulta.getResultList();
+    }
+
 }

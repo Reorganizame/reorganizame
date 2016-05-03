@@ -30,18 +30,18 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     public UsuarioFacade() {
         super(Usuario.class);
     }
-    
-    public Usuario findUserByEmail(String email){
+
+    public Usuario findUserByEmail(String email) {
         Query q = em.createNamedQuery("Usuario.findByCorreo");
         q.setParameter("correo", email);
         List<Usuario> listausuarios = q.getResultList();
         Usuario resultado = null;
-        if(!listausuarios.isEmpty()){
+        if (!listausuarios.isEmpty()) {
             resultado = listausuarios.get(0);
         }
         return resultado;
     }
-    
+
     public Usuario findUsuarioByAlias(String alias) {
         Query consulta = this.em.createNamedQuery("Usuario.findByAlias");
         consulta.setParameter("alias", alias);
@@ -52,21 +52,20 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         }
         return usuarioEncontrado;
     }
-    
-    public List<Usuario> usuariosNoMiembrosDeUnProyecto(int idProyecto){
+
+    public List<Usuario> usuariosNoMiembrosDeUnProyecto(int idProyecto) {
         Query consulta;
         consulta = this.em.createQuery("SELECT u FROM Usuario u, Proyecto p WHERE u.idUsuario NOT IN"
                 + " (SELECT m.idUsuario.idUsuario FROM Miembro m WHERE m.idProyecto.idProyecto=:idProyecto) "
                 + " AND u.idUsuario != p.lider.idUsuario AND p.idProyecto=:idProyecto2");
         consulta.setParameter("idProyecto2", idProyecto);
         consulta.setParameter("idProyecto", idProyecto);
-        
+
         /*
         consulta = this.em.createQuery("SELECT u FROM Usuario u WHERE u.idUsuario NOT IN"
                 + " (SELECT m.idUsuario.idUsuario FROM Miembro m WHERE m.idProyecto.idProyecto=:idProyecto) "
                 + "AND u.idUsuario NOT IN (SELECT p.lider.idUsuario FROM Proyecto p WHERE p.idProyecto:=idProyecto2)");
-        */
-        
-        return consulta.getResultList();     
+         */
+        return consulta.getResultList();
     }
 }

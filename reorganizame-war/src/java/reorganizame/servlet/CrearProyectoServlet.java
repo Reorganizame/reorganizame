@@ -6,8 +6,6 @@
 package reorganizame.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -43,37 +41,33 @@ public class CrearProyectoServlet extends HttpServlet {
     private ProyectoFacade facade;
     @EJB
     private MiembroFacade mfacade;
-     
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-       String nombre = request.getParameter("nombre");
-       String descripcion = request.getParameter("descripcion");
-       Date fecha = new Date();
-       Integer id = 0;
-       
-       HttpSession session = request.getSession();
-       Usuario usr = (Usuario) session.getAttribute("usuario");
-       
-       
-       Proyecto p = new Proyecto(id, fecha);
-       p.setNombre(nombre);
-       p.setDescripcion(descripcion);
-       p.setLider(usr);
-       
-       facade.create(p);
-       
-       Miembro m = new Miembro (id);
-       m.setIdUsuario(usr);
-       m.setIdProyecto(p);
-       m.setRol("lider");
-       
-       mfacade.create(m);
-       
-       
+
+        String nombre = request.getParameter("nombre");
+        String descripcion = request.getParameter("descripcion");
+        Date fecha = new Date();
+        Integer id = 0;
+
+        HttpSession session = request.getSession();
+        Usuario usr = (Usuario) session.getAttribute("usuario");
+
+        Proyecto p = new Proyecto(id, fecha);
+        p.setNombre(nombre);
+        p.setDescripcion(descripcion);
+        p.setLider(usr);
+
+        facade.create(p);
+
+        Miembro m = new Miembro(id);
+        m.setIdUsuario(usr);
+        m.setIdProyecto(p);
+        m.setRol("Director de proyecto");
+
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/ListaProyectosServlet");
         dispatcher.forward(request, response);
-       
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

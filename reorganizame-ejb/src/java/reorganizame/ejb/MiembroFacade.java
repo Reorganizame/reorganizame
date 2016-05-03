@@ -1,4 +1,4 @@
- /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -31,12 +31,12 @@ public class MiembroFacade extends AbstractFacade<Miembro> {
     public MiembroFacade() {
         super(Miembro.class);
     }
-    
-    public List<Miembro> findMiembroByUsuario (Usuario usr) {
-        Query q; 
-        q = em.createQuery("SELECT m FROM Miembro m WHERE m.idUsuario = :Usuario AND m.rol NOT LIKE 'lider'");
+
+    public List<Miembro> findMiembroByUsuario(Usuario usr) {
+        Query q;
+        q = em.createQuery("SELECT m FROM Miembro m WHERE m.idUsuario = :Usuario AND m.idProyecto.lider !=:Usuario");
         q.setParameter("Usuario", usr);
         return q.getResultList();
     }
-    
+
 }

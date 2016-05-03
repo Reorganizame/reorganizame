@@ -6,7 +6,6 @@
 package reorganizame.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.SecureRandom;
 import java.util.Properties;
@@ -140,7 +139,7 @@ public class ServletRecuperarPassword extends HttpServlet {
         
         try{
             Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress("reorganiza.me@outlook.com", "Reorganiza.me"));
+            msg.setFrom(new InternetAddress("reorganiza.me@gmail.com", "Reorganiza.me"));
             msg.setRecipient(Message.RecipientType.TO, new InternetAddress(usuario.getCorreo(), usuario.getNombre()));
             msg.setSubject("Ha recuperado su contraseña");
             String password = this.generarPasswordAleatorio(10);
